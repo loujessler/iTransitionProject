@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - psql_db
+    env_file:
+      - .env
+  psql_db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+  client:
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+    volumes:
+      - ./client:/app
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:
