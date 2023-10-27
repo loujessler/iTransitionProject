@@ -7,7 +7,7 @@ SECRET_KEY = config.SECRET_KEY
 
 DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '83.136.232.252']
 
 
 INSTALLED_APPS = [
