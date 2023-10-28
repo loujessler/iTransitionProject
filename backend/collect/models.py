@@ -68,20 +68,13 @@ class Item(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     tags = models.ManyToManyField(Tag, blank=True)
-    # extra_data = models.JSONField(default=dict)
 
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        for field_name, value in self.extra_data.items():
-            extra_field = ExtraField.objects.get(name=field_name, collection=self.collection)
-            ExtraFieldValue.objects.update_or_create(
-                item=self,
-                extra_field=extra_field,
-                defaults={'value': value}
-            )
+
 
 
 class ExtraFieldValue(models.Model):

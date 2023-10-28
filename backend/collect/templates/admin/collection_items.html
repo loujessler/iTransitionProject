@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>{{ collection.name }}</h1>
+
+<h2>{% trans "Items" %}</h2>
+<ul>
+    {% for item in items %}
+    <li>
+        {{ item.title }}
+        <a href="{% url 'admin:collect_item_change' item.id %}">{% trans "Edit" %}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'admin:collect_item_add' %}?collection={{ collection.id }}">Add New Item</a>
+
+<!-- Начало формы для создания нового элемента -->
+<h2>{% trans "Add New Item" %}</h2>
+<form method="post" action="{% url 'admin:collect_item_add' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="{% trans 'Save' %}">
+</form>
+<!-- Конец формы -->
+
+{% endblock %}

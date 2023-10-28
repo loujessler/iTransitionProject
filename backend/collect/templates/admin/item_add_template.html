@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block field_sets %}
+    {{ block.super }}
+
+    {% for field in form.extra_fields %}
+        <div class="fieldBox">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">
+        </div>
+    {% endfor %}
+{% endblock %}
