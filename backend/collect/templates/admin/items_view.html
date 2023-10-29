@@ -9,7 +9,8 @@
     {% for item in items %}
     <li>
         {{ item.title }}
-        <a href="{% url 'admin:collect_item_change' item.id %}">{% trans "Edit" %}</a>
+<!--        <a href="{% url 'admin:collect_item_change' item.id %}">{% trans "Edit" %}</a>-->
+        <a href="{% url 'collect_item_change' object_id=item.id %}">{% trans "Edit" %}</a>
     </li>
     {% endfor %}
 </ul>

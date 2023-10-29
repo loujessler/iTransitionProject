@@ -19,16 +19,28 @@ class ItemForm(forms.ModelForm):
                 field_name = f'extrafield_{ef.pk}'
                 field_type = ef.field_type
 
+                # Если экземпляр редактируется, получите значение extra field value
+                initial_value = None
+                if self.instance.id:
+                    try:
+                        efv = ExtraFieldValue.objects.get(item=self.instance, extra_field=ef)
+                        initial_value = efv.value
+                    except ExtraFieldValue.DoesNotExist:
+                        pass
+
+                # Создание поля
                 if field_type == 'int':
-                    self.fields[field_name] = forms.IntegerField(label=ef.name, required=False)
+                    self.fields[field_name] = forms.IntegerField(label=ef.name, required=False, initial=initial_value)
                 elif field_type == 'str':
-                    self.fields[field_name] = forms.CharField(label=ef.name, required=False)
+                    self.fields[field_name] = forms.CharField(label=ef.name, required=False, initial=initial_value)
                 elif field_type == 'text':
-                    self.fields[field_name] = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 20}), label=ef.name, required=False)
+                    self.fields[field_name] = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 20}),
+                                                              label=ef.name, required=False, initial=initial_value)
                 elif field_type == 'bool':
-                    self.fields[field_name] = forms.BooleanField(label=ef.name, required=False)
+                    self.fields[field_name] = forms.BooleanField(label=ef.name, required=False,
+                                                                 initial=bool(initial_value))
                 elif field_type == 'date':
-                    self.fields[field_name] = forms.DateField(label=ef.name, required=False)
+                    self.fields[field_name] = forms.DateField(label=ef.name, required=False, initial=initial_value)
 
     def save(self, commit=True):
         instance = super(ItemForm, self).save(commit)
