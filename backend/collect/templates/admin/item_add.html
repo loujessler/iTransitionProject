@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Add New Item to" %} {{ collection.name }}</h1>
+
+<form method="post" action="{% url 'admin:collect_item_add' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="collection_id" value="{{ collection.id }}">
+    <input type="submit" value="{% trans 'Save' %}">
+</form>
+
+{% endblock %}
