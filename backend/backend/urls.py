@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
 from collect.views import items_view, item_add_view, item_change_view, item_delete_view
 
 urlpatterns = [
@@ -9,4 +10,5 @@ urlpatterns = [
     path('item/delete/<int:item_id>/', item_delete_view, name='collect_item_delete'),
 
     path('admin/', admin.site.urls),
+    path('api/', include('collect.api.urls')),
 ]
