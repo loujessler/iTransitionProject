@@ -49,24 +49,3 @@ class ItemAdmin(admin.ModelAdmin):
 
     def has_module_permission(self, request):
         return False
-
-    # def add_view(self, request, form_url='', extra_context=None):
-    #     extra_context = extra_context or {}
-    #     # collection_id = request.GET.get('collection')
-    #     # if collection_id:
-    #     #     extra_context['collection'] = collection_id
-    #     return super(ItemAdmin, self).add_view(request, form_url, extra_context)
-
-    # def get_form(self, request, obj=None, **kwargs):
-    #     form = super(ItemAdmin, self).get_form(request, obj, **kwargs)
-    #     # collection_id = request.GET.get('collection')
-    #     # if collection_id:
-    #     #     form.base_fields['collection'].initial = collection_id
-    #     return form
-
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     if db_field.name == "extra_field":
-    #         collection_id = request.GET.get('collection')
-    #         if collection_id:
-    #             kwargs["queryset"] = ExtraField.objects.filter(collection_id=collection_id)
-    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
