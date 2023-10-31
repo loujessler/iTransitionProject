@@ -2,15 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ItemForm
 from .models import Collection, Item, ExtraField, ExtraFieldValue
 
-from django.urls import reverse
-from django.shortcuts import render, redirect
-
 
 def items_view(request, collection_id):
-    collection = get_object_or_404(Collection, id=collection_id)
-    items = Item.objects.filter(collection=collection)
+    items = Item.objects.select_related('collection').filter(collection_id=collection_id)
     return render(request, 'admin/items_view.html', {
-        'collection': collection,
+        'collection': items[0].collection if items else None,
         'items': items,
     })
 
@@ -19,11 +15,9 @@ def item_add_view(request):
     if request.method == "POST":
         form = ItemForm(request.POST)
         if form.is_valid():
-            # Сохраняем основные поля айтема
             item = form.save(commit=False)
             item.save()
 
-            # Теперь обрабатываем дополнительные поля
             collection_id = form.cleaned_data.get('collection').id
             extra_fields = ExtraField.objects.filter(collection_id=collection_id)
 
@@ -47,8 +41,8 @@ def item_add_view(request):
     })
 
 
-def item_change_view(request, object_id):
-    item = get_object_or_404(Item, pk=object_id)
+def item_change_view(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
 
     if request.method == 'POST':
         form = ItemForm(request.POST, instance=item)
@@ -65,33 +59,15 @@ def item_change_view(request, object_id):
         'item': item,
     }
 
-    return render(request, 'admin/item_edit.html', context)  # Обновите путь к вашему шаблону изменений
+    return render(request, 'admin/item_edit.html', context)
 
 
-# def change_view(self, request, object_id, form_url='', extra_context=None):
-#     if not self.has_change_permission(request, None):
-#         raise PermissionDenied
-#
-#     item = Item.objects.get(pk=object_id)
-#
-#     # Если совершается POST-запрос, обработайте данные и перенаправьте на список объектов
-#     if request.method == 'POST':
-#         form = ItemForm(request.POST, instance=item)
-#         if form.is_valid():
-#             form.save()
-#             return redirect(reverse('admin:collect_item_changelist'))
-#
-#     # Если GET-запрос, отобразите ваш шаблон изменений
-#     else:
-#         form = ItemForm(instance=item)
-#
-#     context = {
-#         'form': form,
-#         'collection': item.collection,
-#         'items': Item.objects.filter(collection=item.collection),
-#     }
-#
-#     if extra_context:
-#         context.update(extra_context)
-#
-#     return render(request, 'path_to_your_template.html', context)
+def item_delete_view(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    collection_id = item.collection.id
+
+    ExtraFieldValue.objects.filter(item=item).delete()
+
+    item.delete()
+
+    return redirect('items_view', collection_id=collection_id)

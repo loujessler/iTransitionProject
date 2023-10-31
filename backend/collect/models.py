@@ -45,18 +45,12 @@ class ExtraField(models.Model):
         return self.name
 
     def clean(self):
-        # Получаем количество каждого типа поля
-        existing_fields = ExtraField.objects.filter(collection=self.collection)
-        counts = {
-            'int': existing_fields.filter(field_type='int').count(),
-            'str': existing_fields.filter(field_type='str').count(),
-            'text': existing_fields.filter(field_type='text').count(),
-            'bool': existing_fields.filter(field_type='bool').count(),
-            'date': existing_fields.filter(field_type='date').count(),
-        }
-
-        # Проверяем, не превышает ли лимит для данного типа поля
-        if counts[self.field_type] >= 3:
+        super().clean()
+        existing_counts = ExtraField.objects.filter(collection=self.collection).values('field_type').annotate(
+            count=models.Count('field_type'))
+        current_count = next(
+            (count['count'] for count in existing_counts if count['field_type'] == self.field_type), 0)
+        if current_count >= 3:
             raise ValidationError(f'You can only add 3 fields of type {self.field_type}.')
 
     def save(self, *args, **kwargs):
@@ -72,15 +66,11 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-
 
 class ExtraFieldValue(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='extra_field_values')
     extra_field = models.ForeignKey(ExtraField, on_delete=models.CASCADE)
-    value = models.TextField()  # используется для хранения значений всех типов полей
+    value = models.TextField()
 
     def __str__(self):
         return f"{self.extra_field.name}: {self.value}"

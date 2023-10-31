@@ -1,5 +1,5 @@
 from django import forms
-from .models import Item, ExtraField, ExtraFieldValue
+from .models import Item, ExtraField, ExtraFieldValue, Collection
 
 
 class ItemForm(forms.ModelForm):
@@ -11,6 +11,11 @@ class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
         collection_id = self.data.get('collection') or self.initial.get('collection')
+        self.fields['collection'] = forms.ModelChoiceField(
+            queryset=Collection.objects.all(),
+            widget=forms.HiddenInput(),
+            initial=collection_id
+        )
 
         if collection_id:
             extra_fields = ExtraField.objects.filter(collection_id=collection_id)
@@ -19,7 +24,6 @@ class ItemForm(forms.ModelForm):
                 field_name = f'extrafield_{ef.pk}'
                 field_type = ef.field_type
 
-                # Если экземпляр редактируется, получите значение extra field value
                 initial_value = None
                 if self.instance.id:
                     try:
@@ -28,7 +32,6 @@ class ItemForm(forms.ModelForm):
                     except ExtraFieldValue.DoesNotExist:
                         pass
 
-                # Создание поля
                 if field_type == 'int':
                     self.fields[field_name] = forms.IntegerField(label=ef.name, required=False, initial=initial_value)
                 elif field_type == 'str':
