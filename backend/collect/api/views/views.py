@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
 
-from ..models import Collection, Item
-from .serializers import ItemSerializer
+from collect.models import Collection, Item
+from collect.api.serializers import ItemSerializer
 
 
 class ItemListCreateAPIView(generics.ListCreateAPIView):
