@@ -1,12 +1,15 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
+
 from .forms import ItemForm
 from .models import Collection, Item, ExtraField, ExtraFieldValue
 
 
 def items_view(request, collection_id):
     items = Item.objects.select_related('collection').filter(collection_id=collection_id)
+    collection = get_object_or_404(Collection, id=collection_id)
     return render(request, 'admin/items_view.html', {
-        'collection': items[0].collection if items else None,
+        'collection': collection,
         'items': items,
     })
 
@@ -32,6 +35,8 @@ def item_add_view(request):
             return redirect('items_view', collection_id=item.collection.id)
     else:
         collection_id = request.GET.get('collection')
+        if not collection_id:
+            return HttpResponseBadRequest("Collection ID is required")
         form = ItemForm(initial={'collection': collection_id})
 
     collection = get_object_or_404(Collection, id=collection_id)
@@ -65,8 +70,6 @@ def item_change_view(request, item_id):
 def item_delete_view(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     collection_id = item.collection.id
-
-    ExtraFieldValue.objects.filter(item=item).delete()
 
     item.delete()
 

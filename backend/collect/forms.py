@@ -11,6 +11,7 @@ class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
         collection_id = self.data.get('collection') or self.initial.get('collection')
+        print(f'collection_id: {collection_id}')
         self.fields['collection'] = forms.ModelChoiceField(
             queryset=Collection.objects.all(),
             widget=forms.HiddenInput(),
