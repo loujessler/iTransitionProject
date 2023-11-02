@@ -7,12 +7,15 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Drawer
+    Drawer, Switch
 } from "@mui/material";
 import {Inbox, Mail, Menu} from "@mui/icons-material";
 import React from "react";
+import ModeTheme from "../utils/ModeTheme";
+import {useThemeState} from "../../theme";
 
 function Sidebar() {
+    const {mode, setMode} = useThemeState();
     const [state, setState] = React.useState({left: false,});
 
     const toggleDrawer = (open) => (event) => {
@@ -62,7 +65,14 @@ function Sidebar() {
                                 </ListItemButton>
                             </ListItem>
                         ))}
+                        <ListItem key='theme_mode' disablePadding>
+                            <ListItemButton>
+                                <ModeTheme componentType={'listItemIcon'}/>
+                                <Switch onChange={() => setMode(!mode)} checked={mode}/>
+                            </ListItemButton>
+                        </ListItem>
                     </List>
+
                 </Box>
             </Drawer>
         </div>

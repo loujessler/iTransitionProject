@@ -1,16 +1,25 @@
+import React from "react";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import {IconButton} from "@mui/material";
-import React from "react";
+import {ListItemIcon, IconButton} from "@mui/material";
 
-function ModeTheme({setMode, mode}) {
-    return (
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setMode(!mode)}>
-            {mode ?
-                <Brightness7Icon/> : <Brightness4Icon/>
-            }
-        </IconButton>
-    )
+import {useThemeState} from "../../theme";
+
+const COMPONENT_TYPE = {
+    iconButton: IconButton,
+    listItemIcon: ListItemIcon,
+}
+
+function ModeTheme({componentType}) {
+    const {mode, setMode} = useThemeState();
+
+    const ComponentType = COMPONENT_TYPE[componentType]
+
+    return (<div>
+        <ComponentType color="inherit" aria-label="theme" onClick={() => setMode(!mode)}>
+            {mode ? <Brightness7Icon/> : <Brightness4Icon/>}
+        </ComponentType>
+    </div>)
 }
 
 export default ModeTheme
