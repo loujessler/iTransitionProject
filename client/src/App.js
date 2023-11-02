@@ -18,6 +18,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<MainPage/>} index/>
                     <Route path="/collection/:id" element={<Collection/>}/>
+
                     {/*<Route index element={<MainPage />} />*/}
                     {/*<Route path="about" element={<About />} />*/}
                     {/*<Route path="dashboard" element={<Dashboard />} />*/}

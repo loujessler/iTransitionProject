@@ -8,37 +8,27 @@ import MainPageStyles from "../../styles/MainPageStyles";
 export function LastItems(props) {
     const items = props.items;
 
-    return (
-        <Grid item xs={9} md={5} sx={MainPageStyles.gridItem}>
-            <List color="secondary" sx={MainPageStyles.list}>
-                <Typography variant="h5">Last items</Typography>
-                {/*<Card key={item.id} variant="outlined" style={{marginBottom: 15}}>*/}
-                {items.map((item) => (
-                    <Box>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem key={item.id} sx={MainPageStyles.listItem}>
-                            <ListItemText
-                                primary={item.title.toUpperCase()}
-                                secondary={
-                                    <React.Fragment>
-                                        <Typography sx={{display: 'inline'}}
-                                                    component="span"
-                                                    variant="body2"
-                                                    color="text.primary"
-                                            // variant="h6"
-                                        >
-                                            {item.user.username}
-                                        </Typography>
-                                        {` — ${item.collection.name}`}
-                                    </React.Fragment>
-                                }
-                            />
-                            {/*<Typography color="textSecondary"></Typography>*/}
-                            {/*<Typography color="textSecondary">{item.user.username}</Typography>*/}
-                        </ListItem>
-                    </Box>
-                ))}
-            </List>
-        </Grid>
-    );
+    return (<Grid xs={9} md={5} sx={MainPageStyles.gridItem}>
+        <List color="secondary" sx={MainPageStyles.list}>
+            <Typography variant="h5">Last items</Typography>
+            {items.map((item) => (<Box key={item.id}>
+                <Divider variant="inset" component="li"/>
+                <ListItem sx={MainPageStyles.listItem}>
+                    <ListItemText
+                        primary={item.title.toUpperCase()}
+                        secondary={<React.Fragment>
+                            <Typography sx={{display: 'inline'}}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                            >
+                                {item.user.username}
+                            </Typography>
+                            {` — ${item.collection.name}`}
+                        </React.Fragment>}
+                    />
+                </ListItem>
+            </Box>))}
+        </List>
+    </Grid>);
 }

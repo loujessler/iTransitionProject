@@ -10,14 +10,14 @@ export function TopCollections(props) {
     const navigate = useNavigate();
     const top_collections = props.top_collections;
 
-    return (<Grid item xs={9} md={5} sx={MainPageStyles.gridItem}>
-
-            <List
-                color="secondary" sx={MainPageStyles.list}>
+    return (
+        <Grid xs={9} md={5} sx={MainPageStyles.gridItem}>
+            <List color="secondary" sx={MainPageStyles.list}>
                 <Typography variant="h5">Top collections</Typography>
-                {top_collections.map((collection) => (<Box>
+                {top_collections.map((collection) => (
+                    <Box key={collection.id}>
                         <Divider variant="inset" component="li"/>
-                        <ListItem key={collection.id} sx={MainPageStyles.listItem}>
+                        <ListItem sx={MainPageStyles.listItem}>
                             <ListItemText
                                 primary={collection.name.toUpperCase()}
                                 secondary={<React.Fragment>
@@ -34,7 +34,8 @@ export function TopCollections(props) {
                             <Button size="small"
                                     onClick={() => navigate(`/collection/${collection.id}`)}>View</Button>
                         </ListItem>
-                    </Box>))}
+                    </Box>
+                ))}
             </List>
         </Grid>);
 }

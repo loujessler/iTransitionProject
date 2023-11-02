@@ -10,7 +10,7 @@ export function Tags(props) {
     const tags = props.tags;
 
     return (
-        <Grid item xs='auto' md={2} sx={MainPageStyles.gridItem}>
+        <Grid xs='auto' md={2} sx={MainPageStyles.gridItem}>
             <List color="secondary" sx={MainPageStyles.list}>
                 <Typography variant="h5">Tags cloud</Typography>
                 {tags.map((tag) => (

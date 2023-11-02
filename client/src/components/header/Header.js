@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AppBar, Toolbar, Typography, Button, InputBase} from '@mui/material';
 import {styled, alpha} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -6,6 +6,7 @@ import MainPageStyles from "../../styles/MainPageStyles";
 import Sidebar from "../sidebar/Sidebar";
 import {useThemeState} from "../../theme";
 import ModeTheme from "../utils/ModeTheme";
+import AuthDialog from "../authorization/AuthDialog"
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -48,6 +49,10 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 
 const Header = () => {
     const {isMobile} = useThemeState();
+    const [authMode, setAuthMode] = useState(null);
+
+    // const handleAuthOpen = (mode) => setAuthMode(mode);
+    // const handleAuthClose = () => setAuthMode(null);
 
     return (<AppBar position="static" sx={MainPageStyles.appBar}>
         <Toolbar sx={{justifyContent: 'space-evenly'}}>
@@ -60,14 +65,16 @@ const Header = () => {
                     <SearchIcon/>
                 </SearchIconWrapper>
                 <StyledInputBase
+                    id="search-header"
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                 />
             </Search>
             {!isMobile && (<>
-                <Button color="inherit">Login</Button>
-                <Button color="inherit">Register</Button>
+                <Button color="inherit" onClick={() => setAuthMode('login')}>Login</Button>
+                <Button color="inherit" onClick={() => setAuthMode('register')}>Register</Button>
             </>)}
+            <AuthDialog key={authMode} open={authMode !== null} onClose={() => setAuthMode(null)} mode={authMode} />
         </Toolbar>
     </AppBar>);
 };
