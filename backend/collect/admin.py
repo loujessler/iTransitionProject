@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from .forms import ItemForm
-from .models import Collection, Item, ExtraFieldValue, ExtraField
+from .models import Collection, Item, ExtraFieldValue, ExtraField, Tag
 
 
 class ExtraFieldValueInline(admin.TabularInline):
@@ -49,3 +49,8 @@ class ItemAdmin(admin.ModelAdmin):
 
     def has_module_permission(self, request):
         return False
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass

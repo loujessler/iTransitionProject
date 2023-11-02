@@ -1,0 +1,42 @@
+.loader {
+    --size: 2.3vh;
+
+    position: absolute;
+    border: 0 solid #818181;
+    border-radius: 40%;
+    border-top: 1vh solid rgba(172, 52, 219, 0.7);
+    border-bottom: 1vh solid rgba(172, 52, 219, 0.7);
+    width: var(--size);
+    height: var(--size);
+    left: calc(50% - var(--size));
+    top: calc(50% - var(--size));
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        border-color: yellowgreen;
+        border-top: 1vh solid aquamarine;
+    }
+    25% {
+        transform: rotate(90deg);
+        border-color: greenyellow;
+        border-top: 1vh solid yellowgreen;
+    }
+    50% {
+        transform: rotate(180deg);
+        border-color: lightgreen;
+        border-top: 1vh solid greenyellow;
+    }
+    75% {
+        transform: rotate(270deg);
+        border-color: aquamarine;
+        border-top: 1vh solid lightgreen;
+    }
+    100% {
+        transform: rotate(360deg);
+        border-color: yellowgreen;
+        border-top: 1vh solid aquamarine;
+    }
+}

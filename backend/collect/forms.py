@@ -1,5 +1,8 @@
 from django import forms
-from .models import Item, ExtraField, ExtraFieldValue, Collection
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
+from django.contrib.admin.sites import site
+
+from .models import Item, ExtraField, ExtraFieldValue, Collection, Tag
 
 
 class ItemForm(forms.ModelForm):
@@ -11,12 +14,19 @@ class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
         collection_id = self.data.get('collection') or self.initial.get('collection')
-        print(f'collection_id: {collection_id}')
+
         self.fields['collection'] = forms.ModelChoiceField(
             queryset=Collection.objects.all(),
             widget=forms.HiddenInput(),
             initial=collection_id
         )
+        tag_qs = Tag.objects.all()
+        tag_widget = forms.SelectMultiple(attrs={'size': '5'})
+        tag_widget = RelatedFieldWidgetWrapper(tag_widget,
+                                               self.instance._meta.get_field('tags').remote_field,
+                                               site,
+                                               can_add_related=True)
+        self.fields['tags'] = forms.ModelMultipleChoiceField(queryset=tag_qs, widget=tag_widget, required=False)
 
         if collection_id:
             extra_fields = ExtraField.objects.filter(collection_id=collection_id)

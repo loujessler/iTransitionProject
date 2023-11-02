@@ -1,27 +1,25 @@
-from django.db.models import Count
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from collect.api.mixins.collection_mixins import CollectionsMixin
+from collect.api.mixins.item_mixins import LatestItemsMixin
+from collect.api.mixins.tag_mixins import TagsMixin
 from collect.api.serializers import ItemSerializer, CollectionSerializer, TagSerializer
-from collect.models import Item, Collection, Tag
 
 
-class MainPageAPIView(APIView):
+class MainPageAPIView(APIView, LatestItemsMixin, CollectionsMixin, TagsMixin):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        # Получаем данные с помощью миксинов
+        latest_items = self.get_latest_items()
+        top_collections = self.get_top_collections()
+        tags = self.get_tags()
 
-        # Список последних добавленных айтемов
-        latest_items = Item.objects.all().order_by('-created_date')[:5]  # предполагая, что у вас есть поле created_date
+        # Сериализуем данные
         latest_items_serializer = ItemSerializer(latest_items, many=True)
-
-        # Список 5 самых больших коллекций
-        top_collections = Collection.objects.annotate(num_items=Count('item')).order_by('-num_items')[:5]
         top_collections_serializer = CollectionSerializer(top_collections, many=True)
-
-        # Облако тэгов
-        tags = Tag.objects.all()
         tags_serializer = TagSerializer(tags, many=True)
 
         return Response({
