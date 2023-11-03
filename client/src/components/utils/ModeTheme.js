@@ -3,7 +3,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import {ListItemIcon, IconButton} from "@mui/material";
 
-import {useThemeState} from "../../theme";
+import {useThemeState} from "./ThemeProvider";
 
 const COMPONENT_TYPE = {
     iconButton: IconButton,

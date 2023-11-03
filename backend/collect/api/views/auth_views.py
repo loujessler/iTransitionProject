@@ -25,7 +25,8 @@ class LoginView(APIView):
                 'authToken',
                 token.key,
                 max_age=86400,
-                secure=True,
+                # TODO Проверка безопасного протокола HTTPS
+                # secure=True,
                 httponly=True,
                 samesite='Strict'
             )

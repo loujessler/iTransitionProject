@@ -4,9 +4,10 @@ import {styled, alpha} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import MainPageStyles from "../../styles/MainPageStyles";
 import Sidebar from "../sidebar/Sidebar";
-import {useThemeState} from "../../theme";
+import {useThemeState} from "../utils/ThemeProvider";
 import ModeTheme from "../utils/ModeTheme";
 import AuthDialog from "../authorization/AuthDialog"
+import {useAuth} from "../utils/AuthProvider";
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -51,8 +52,7 @@ const Header = () => {
     const {isMobile} = useThemeState();
     const [authMode, setAuthMode] = useState(null);
 
-    // const handleAuthOpen = (mode) => setAuthMode(mode);
-    // const handleAuthClose = () => setAuthMode(null);
+    const {isAuthenticated, logOut} = useAuth();
 
     return (<AppBar position="static" sx={MainPageStyles.appBar}>
         <Toolbar sx={{justifyContent: 'space-evenly'}}>
@@ -70,11 +70,15 @@ const Header = () => {
                     inputProps={{'aria-label': 'search'}}
                 />
             </Search>
-            {!isMobile && (<>
-                <Button color="inherit" onClick={() => setAuthMode('login')}>Login</Button>
-                <Button color="inherit" onClick={() => setAuthMode('register')}>Register</Button>
-            </>)}
-            <AuthDialog key={authMode} open={authMode !== null} onClose={() => setAuthMode(null)} mode={authMode} />
+            {!isMobile && (isAuthenticated ? (
+                <Button color="inherit" onClick={logOut}>Logout</Button>
+            ) : (
+                <>
+                    <Button color="inherit" onClick={() => setAuthMode('login')}>Login</Button>
+                    <Button color="inherit" onClick={() => setAuthMode('register')}>Register</Button>
+                </>
+            ))}
+            <AuthDialog key={authMode} open={authMode !== null} onClose={() => setAuthMode(null)} mode={authMode}/>
         </Toolbar>
     </AppBar>);
 };

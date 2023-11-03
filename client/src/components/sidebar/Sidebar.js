@@ -9,17 +9,29 @@ import {
     ListItemText,
     Drawer, Switch
 } from "@mui/material";
-import {Inbox, Mail, Menu} from "@mui/icons-material";
-import React from "react";
+import {Inbox, Menu, Login, PersonAddAlt, Logout} from "@mui/icons-material";
+import React, {useState} from "react";
 import ModeTheme from "../utils/ModeTheme";
-import {useThemeState} from "../../theme";
+import {useThemeState} from "../utils/ThemeProvider";
+import AuthDialog from "../authorization/AuthDialog";
+import {useAuth} from "../utils/AuthProvider";
 
 function Sidebar() {
     const {mode, setMode} = useThemeState();
-    const [state, setState] = React.useState({left: false,});
+    const {isAuthenticated, logOut} = useAuth();
+    const [authMode, setAuthMode] = useState(null);
+    const [state, setState] = useState({left: false,});
 
-    const toggleDrawer = (open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    const authItems = isAuthenticated
+        ? [{type: 'logout', icon: <Logout/>, text: 'LOGOUT'}]
+        : [
+            {type: 'login', icon: <Login/>, text: 'LOGIN'},
+            {type: 'register', icon: <PersonAddAlt/>, text: 'REGISTER'},
+        ];
+
+    const toggleDrawer = (open) => (e) => {
+        if (e && e.type === 'keydown' &&
+            (e.key === 'Tab' || e.key === 'Shift')) {
             return;
         }
 
@@ -42,31 +54,31 @@ function Sidebar() {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <Inbox/> : <Mail/>}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text}/>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
+                        <ListItem key='1' disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <Inbox/>
+                                </ListItemIcon>
+                                <ListItemText primary='haha'/>
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
+                        {authItems.map((item) => (
+                            <ListItem key={item.type} disablePadding>
+                                <ListItemButton color="inherit" onClick={() => {
+                                    item.type === 'logout' ? logOut() : setAuthMode(item.type);
+                                }}>
                                     <ListItemIcon>
-                                        {index % 2 === 0 ? <Inbox/> : <Mail/>}
+                                        {item.icon}
                                     </ListItemIcon>
-                                    <ListItemText primary={text}/>
+                                    <ListItemText primary={item.text}/>
                                 </ListItemButton>
                             </ListItem>
                         ))}
                         <ListItem key='theme_mode' disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => setMode(!mode)}>
                                 <ModeTheme componentType={'listItemIcon'}/>
                                 <Switch onChange={() => setMode(!mode)} checked={mode}/>
                             </ListItemButton>
@@ -75,6 +87,7 @@ function Sidebar() {
 
                 </Box>
             </Drawer>
+            <AuthDialog key={authMode} open={authMode !== null} onClose={() => setAuthMode(null)} mode={authMode}/>
         </div>
     );
 }
