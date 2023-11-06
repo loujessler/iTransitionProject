@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import http from '../../http-common';
-import Loader from "../utils/Loader";
+import Loader from "../elements/Loader";
 
 function Collection() {
     const { id } = useParams();
@@ -15,7 +15,7 @@ function Collection() {
                 setCollection(response.data);
             })
             .catch(error => {
-                console.error("Error fetching collection:", error);
+                console.error("Error fetching Collection:", error);
             });
     }, [id]);
 

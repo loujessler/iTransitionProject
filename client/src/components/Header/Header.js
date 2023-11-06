@@ -3,9 +3,9 @@ import {AppBar, Toolbar, Typography, Button, InputBase} from '@mui/material';
 import {styled, alpha} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import MainPageStyles from "../../styles/MainPageStyles";
-import Sidebar from "../sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 import {useThemeState} from "../utils/ThemeProvider";
-import ModeTheme from "../utils/ModeTheme";
+import ModeThemeBtn from "../elements/ModeThemeBtn";
 import AuthDialog from "../authorization/AuthDialog"
 import {useAuth} from "../utils/AuthProvider";
 
@@ -56,7 +56,7 @@ const Header = () => {
 
     return (<AppBar position="static" sx={MainPageStyles.appBar}>
         <Toolbar sx={{justifyContent: 'space-evenly'}}>
-            {isMobile ? (<Sidebar/>) : (<ModeTheme componentType={'iconButton'}/>)}
+            {isMobile ? (<Sidebar/>) : (<ModeThemeBtn componentType={'iconButton'}/>)}
             <Typography variant="h6" style={{flexGrow: 1}}>
                 SACI
             </Typography>

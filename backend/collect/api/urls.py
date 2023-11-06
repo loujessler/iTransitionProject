@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .views.auth_views import LoginView, LogoutView
-from .views.create_user_views import CreateUserView
+from .views.auth_views import LoginView, LogoutView, RegisterUserView
 from .views.collection_views import CollectionView
 from .views.main_views import ItemListCreateAPIView, ItemRetrieveUpdateDestroyAPIView
 from .views.main_page_views import MainPageAPIView
@@ -13,7 +12,8 @@ urlpatterns = [
 
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', CreateUserView.as_view(), name='register'),
+    path('register/', RegisterUserView.as_view(), name='register'),
+    path('exist_username/', RegisterUserView.exist_username, name='exist_username'),
 
     path('collection/<int:pk>/',
          CollectionView.as_view(), name='api-collection'),

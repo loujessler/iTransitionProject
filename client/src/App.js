@@ -5,9 +5,9 @@ import './App.css';
 import {ThemeProvider} from "./components/utils/ThemeProvider";
 import {AuthProvider} from "./components/utils/AuthProvider";
 
-import MainPage from "./components/main_page/MainPage";
-import Collection from "./components/collection/Collection";
-import Header from "./components/header/Header";
+import {MainPage} from "./components/MainPage/MainPage";
+import Collection from "./components/Collection/Collection";
+import Header from "./components/Header/Header";
 
 
 function App() {

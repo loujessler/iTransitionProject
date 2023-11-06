@@ -5,11 +5,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import http from '../../http-common'
 
-import Loader from "../utils/Loader";
 import {LastItems} from "./LastItems";
 import {TopCollections} from "./TopCollections";
 import {Tags} from "./Tags";
 import MainPageStyles from '../../styles/MainPageStyles';
+import Loader from "../elements/Loader";
 
 
 function MainPage() {
@@ -20,7 +20,6 @@ function MainPage() {
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
-        // Загрузка последних добавленных айтемов
         http.get('/main-page/')
             .then(response => {
                 setLatestItems(response.data['latest_items']);
@@ -35,7 +34,7 @@ function MainPage() {
     }, []);
 
     if (loading) {
-        return <Loader/>;
+        return (<Loader />);
     }
 
     return (
@@ -51,4 +50,4 @@ function MainPage() {
     );
 }
 
-export default MainPage;
+export {MainPage};

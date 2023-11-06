@@ -1,4 +1,4 @@
-const Cookies = {
+const cookies = {
     get(name) {
         let value = "; " + document.cookie;
         let parts = value.split("; " + name + "=");
@@ -25,4 +25,4 @@ const Cookies = {
     }
 };
 
-export default Cookies;
+export default cookies;

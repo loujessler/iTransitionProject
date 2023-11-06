@@ -3,14 +3,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import {ListItemIcon, IconButton} from "@mui/material";
 
-import {useThemeState} from "./ThemeProvider";
+import {useThemeState} from "../utils/ThemeProvider";
 
 const COMPONENT_TYPE = {
     iconButton: IconButton,
     listItemIcon: ListItemIcon,
 }
 
-function ModeTheme({componentType}) {
+function ModeThemeBtn({componentType}) {
     const {mode, setMode} = useThemeState();
 
     const ComponentType = COMPONENT_TYPE[componentType]
@@ -22,4 +22,4 @@ function ModeTheme({componentType}) {
     </div>)
 }
 
-export default ModeTheme
+export default ModeThemeBtn

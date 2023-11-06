@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import {Inbox, Menu, Login, PersonAddAlt, Logout} from "@mui/icons-material";
 import React, {useState} from "react";
-import ModeTheme from "../utils/ModeTheme";
+import ModeThemeBtn from "../elements/ModeThemeBtn";
 import {useThemeState} from "../utils/ThemeProvider";
 import AuthDialog from "../authorization/AuthDialog";
 import {useAuth} from "../utils/AuthProvider";
@@ -79,7 +79,7 @@ function Sidebar() {
                         ))}
                         <ListItem key='theme_mode' disablePadding>
                             <ListItemButton onClick={() => setMode(!mode)}>
-                                <ModeTheme componentType={'listItemIcon'}/>
+                                <ModeThemeBtn componentType={'listItemIcon'}/>
                                 <Switch onChange={() => setMode(!mode)} checked={mode}/>
                             </ListItemButton>
                         </ListItem>

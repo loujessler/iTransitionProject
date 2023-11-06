@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import Cookies from './Cookies';
+import cookies from './cookies';
 
 const AuthContext = createContext();
 
@@ -8,7 +8,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('authToken'));
+    const [isAuthenticated, setIsAuthenticated] = useState(!!cookies.get('authToken'));
 
     const logIn = () => {
         setIsAuthenticated(true);
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     const logOut = () => {
         if (isAuthenticated) {
-            Cookies.delete('authToken');
+            cookies.delete('authToken');
             setIsAuthenticated(false);
         } else {
             console.log('you already logout')

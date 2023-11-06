@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from ..serializers import UserSerializer
 
 
-class CreateUserView(APIView):
+class RegistrateUserView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):

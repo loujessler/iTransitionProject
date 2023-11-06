@@ -1,87 +1,51 @@
-import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
-import http from '../../http-common';
-import Cookies from "../utils/Cookies";
-import {useAuth} from "../utils/AuthProvider";
-// "0e41a2146a346f374bf1a530fd17bd409b7b70a2"
+import React from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Alert } from '@mui/material';
+import useForm from './hooks/useForm';
+import useAuthDialog from './hooks/useAuthDialog';
+import UsernameForm from './UsernameForm';
+import PasswordForm from "./PasswordForm";
+import EmailForm from './EmailForm';
 
 const AuthDialog = ({ open, onClose, mode }) => {
-    const { logIn } = useAuth();
-    const [authData, setAuthData] = useState({
+    const initialState = {
         username: '',
         password: '',
+        confirmPassword: mode === 'register' ? '' : undefined,
         email: mode === 'register' ? '' : undefined,
-    });
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        http.post(`${mode}/`, authData)
-            .then((response) => {
-                Cookies.set('authToken', response.data.token, 1);
-                // if (!response.status) {
-                //     throw new Error(errorMsg);
-                // }
-                onClose();
-                logIn();
-                // return response.json();
-            })
-            // .then((data) => {
-            //     this.setState({ isAuthenticated: true });
-            //     localStorage.setItem('currentUserId', data.user_id);
-            // })
-            .catch((error) => {
-                console.log('error: ', error);
-            });
-
-        // try {
-        //     const response = await http.post(`${mode}/`, authData);
-        //     console.log(response);
-        //     onClose();
-        // } catch (error) {
-        //     console.log('error: ', error);
-        // }
     };
+
+    const [authData, setAuthData] = useForm(initialState);
+
+    const { handleSubmit, errors, showAlert } = useAuthDialog(mode);
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{mode === 'login' ? 'Login' : 'Register'}</DialogTitle>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e, authData, onClose)}>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Username"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={authData.username}
-                        onChange={(e) => setAuthData({ ...authData, username: e.target.value })}
+                    <UsernameForm
+                        authData={authData.username}
+                        setAuthData={setAuthData}
+                        errorMessage={errors}
                     />
-                    <TextField
-                        margin="dense"
-                        label="Password"
-                        type="password"
-                        fullWidth
-                        variant="standard"
-                        value={authData.password}
-                        onChange={(e) => setAuthData({ ...authData, password: e.target.value })}
+                    <PasswordForm
+                        authData={authData.password}
+                        setAuthData={setAuthData}
+                        errorMessage={errors}
+                        useConfirm={mode === 'register'}
                     />
                     {mode === 'register' && (
-                        <TextField
-                            margin="dense"
-                            label="Email"
-                            type="email"
-                            fullWidth
-                            variant="standard"
-                            value={authData.email}
-                            onChange={(e) => setAuthData({ ...authData, email: e.target.value })}
+                        <EmailForm
+                            authData={authData.email}
+                            setAuthData={setAuthData}
+                            errorMessage={errors}
                         />
                     )}
+                    {showAlert && <Alert severity="error">{errors.form || 'An error occurred.'}</Alert>}
                 </DialogContent>
                 <DialogActions>
-                    <Button size="small" color="error" onClick={onClose}>Cancel</Button>
-                    <Button id="submit" type="submit" variant="outlined">{mode === 'login' ? 'Login' : 'Register'}</Button>
+                    <Button onClick={onClose}>Cancel</Button>
+                    <Button type="submit">{mode === 'login' ? 'Log in' : 'Sign up'}</Button>
                 </DialogActions>
             </form>
         </Dialog>
