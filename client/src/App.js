@@ -2,33 +2,39 @@ import {Routes, Route} from "react-router-dom";
 
 import './App.css';
 
-import {ThemeProvider} from "./components/utils/ThemeProvider";
-import {AuthProvider} from "./components/utils/AuthProvider";
+import {ThemeProvider} from "./shared/providers/ThemeProvider";
+import {AuthProvider} from "./shared/providers/AuthProvider";
+import {LoadingProvider} from "./shared/providers/LoadingProvider"
+import {ErrorProvider} from './shared/contexts/ErrorContext'
 
-import {MainPage} from "./components/MainPage/MainPage";
-import Collection from "./components/Collection/Collection";
-import Header from "./components/Header/Header";
+import {MainPage} from "./pages/MainPage";
+import {CollectionPage} from "./pages/CollectionPage";
+import Header from "./sections/Header";
 
 
 function App() {
 
     return (
         <div className="App">
-            <AuthProvider>
-                <ThemeProvider>
-                    <Header/>
-                    <Routes>
-                        <Route path="/" element={<MainPage/>} index/>
-                        <Route path="/collection/:id" element={<Collection/>}/>
+            <LoadingProvider>
+                <AuthProvider>
+                    <ThemeProvider>
+                        <ErrorProvider>
+                            <Header/>
+                            <Routes>
+                                <Route path="/" element={<MainPage/>} index/>
+                                <Route path="/collection/:id" element={<CollectionPage/>}/>
 
-                        {/*<Route index element={<MainPage />} />*/}
-                        {/*<Route path="about" element={<About />} />*/}
-                        {/*<Route path="dashboard" element={<Dashboard />} />*/}
+                                {/*<Route index element={<MainPage />} />*/}
+                                {/*<Route path="about" element={<About />} />*/}
+                                {/*<Route path="dashboard" element={<Dashboard />} />*/}
 
-                        {/*<Route path="*" element={<NoMatch />} />*/}
-                    </Routes>
-                </ThemeProvider>
-            </AuthProvider>
+                                {/*<Route path="*" element={<NoMatch />} />*/}
+                            </Routes>
+                        </ErrorProvider>
+                    </ThemeProvider>
+                </AuthProvider>
+            </LoadingProvider>
         </div>
     );
 }

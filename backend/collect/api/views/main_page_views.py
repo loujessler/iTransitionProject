@@ -12,12 +12,10 @@ class MainPageAPIView(APIView, LatestItemsMixin, CollectionsMixin, TagsMixin):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        # Получаем данные с помощью миксинов
-        latest_items = self.get_latest_items()
-        top_collections = self.get_top_collections()
-        tags = self.get_tags()
+        latest_items = self.latest_items()
+        top_collections = self.top_collections()
+        tags = self.tags()
 
-        # Сериализуем данные
         latest_items_serializer = ItemSerializer(latest_items, many=True)
         top_collections_serializer = CollectionSerializer(top_collections, many=True)
         tags_serializer = TagSerializer(tags, many=True)

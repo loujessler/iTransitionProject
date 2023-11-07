@@ -6,11 +6,11 @@ from collect.models import Collection
 class CollectionsMixin:
     collection = Collection.objects
 
-    def get_collection(self, pk):
+    def collection_by_id(self, pk):
         return self.collection.get(pk=pk)
 
-    def get_collections(self):
+    def collections(self):
         return self.collection.all()
 
-    def get_top_collections(self):
+    def top_collections(self):
         return self.collection.annotate(num_items=Count('item')).order_by('-num_items')[:5]

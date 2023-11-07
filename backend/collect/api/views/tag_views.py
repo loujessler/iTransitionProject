@@ -10,6 +10,6 @@ class TagListView(APIView, TagsMixin):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        tags = self.get_tags()
+        tags = self.tags()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
