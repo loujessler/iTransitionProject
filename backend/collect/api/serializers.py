@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from ..models import Item, Collection, ExtraFieldValue, ExtraField, Tag, User
+from ..models import Item, Collection, ExtraFieldValue, ExtraField, Tag
+from django.contrib.auth.models import User
 
 
 class ExtraFieldSerializer(serializers.ModelSerializer):
@@ -32,7 +33,9 @@ class TagSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email']
+        # fields = '__all__'
+        # fields = ['id', 'username', 'password', 'email']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
         extra_kwargs = {'password': {'write_only': True}}
 
     @staticmethod

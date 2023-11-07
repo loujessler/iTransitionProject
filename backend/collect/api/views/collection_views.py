@@ -11,6 +11,15 @@ from collect.models import Collection
 class CollectionView(APIView, CollectionsMixin):
     permission_classes = [permissions.AllowAny]
 
+    def get(self, request):
+        collections = self.collections()
+        serializer = CollectionSerializer(collections, many=True)
+        return Response(serializer.data)
+
+
+class CollectionIdView(APIView, CollectionsMixin):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request, pk):
         try:
             collection = self.collection_by_id(pk)
@@ -18,15 +27,6 @@ class CollectionView(APIView, CollectionsMixin):
             return Response({"error": "Collection not found"}, status=404)
 
         serializer = CollectionSerializer(collection)
-        return Response(serializer.data)
-
-
-class CollectionListView(APIView, CollectionsMixin):
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request):
-        collections = self.collections()
-        serializer = CollectionSerializer(collections, many=True)
         return Response(serializer.data)
 
 

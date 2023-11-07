@@ -1,7 +1,19 @@
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from ..mixins.user_mixins import UserMixin
 from ..serializers import UserSerializer
+from django.contrib.auth.models import User
+
+
+class UserDataView(APIView, UserMixin):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, pk, format=None):
+        user = self.user_by_id(pk)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
 
 class RegistrateUserView(APIView):

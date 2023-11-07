@@ -1,9 +1,11 @@
-from django.contrib import admin
+from django.contrib import admin, auth
 from django.urls import reverse
 from django.utils.html import format_html
 
 from .forms import ItemForm
 from .models import Collection, Item, ExtraFieldValue, ExtraField, Tag
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
 class ExtraFieldValueInline(admin.TabularInline):
@@ -54,3 +56,11 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     pass
+
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_staff')
