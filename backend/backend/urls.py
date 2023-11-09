@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 from collect.views import items_view, item_add_view, item_change_view, item_delete_view
 
+
 urlpatterns = [
     path('admin/collect/collection/<int:collection_id>/', items_view, name='items_view'),
     path('admin/collect/item/add/', item_add_view, name='collect_item_add'),

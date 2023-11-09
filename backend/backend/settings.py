@@ -7,7 +7,7 @@ SECRET_KEY = config.SECRET_KEY
 
 DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', '83.136.232.252']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', '83.136.232.252', "192.168.31.100", "192.168.31.11"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,11 +98,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://192.168.31.11:3000",
+    "http://192.168.31.100:3000",
 )
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://192.168.31.11:3000",
+    "http://192.168.31.100:3000",
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -117,3 +121,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'

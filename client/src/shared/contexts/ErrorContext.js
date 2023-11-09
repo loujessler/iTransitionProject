@@ -11,7 +11,7 @@ export const useErrorHandler = () => {
     return context;
 };
 
-export const ErrorProvider = ({children}) => {
+export const ErrorContextProvider = ({children}) => {
     const [error, setError] = useState(null);
 
     const showError = (error) => {

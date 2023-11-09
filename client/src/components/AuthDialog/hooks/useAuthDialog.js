@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import http from '../../../http-common';
-import cookies from '../../utils/cookies';
 import { useAuth } from '../../../shared/providers/AuthProvider';
 import useValidation from "./useValidation";
 import {
@@ -9,6 +7,7 @@ import {
     validatePassword,
     validateUsername
 } from "../validation";
+import authService from "../../../api/services/authService";
 
 function useAuthDialog(mode) {
     const [showAlert, setShowAlert] = useState(false);
@@ -36,8 +35,7 @@ function useAuthDialog(mode) {
         }
 
         try {
-            const response = await http.post(`/${mode}/`, formData);
-            cookies.set('authToken', response.data.token, { expires: 1 });
+            await authService[mode](formData);
             onClose();
             logIn();
         } catch (error) {
@@ -54,7 +52,7 @@ function useAuthDialog(mode) {
 
             setErrors(errors => ({
                 ...errors,
-                ['form']: errorMsg,
+                form: errorMsg,
             }));
             setShowAlert(true);
         }

@@ -21,7 +21,6 @@ function UsernameForm(props) {
                 value={authData}
                 onChange={(e) => setAuthData('username', e.target.value)}
                 error={!!errorMessage.username}
-                helperText={errorMessage.username}
             />
             <ErrorMessage errorMessage={errorMessage.username}/>
         </FormControl>

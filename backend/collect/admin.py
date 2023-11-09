@@ -3,9 +3,11 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from .forms import ItemForm
-from .models import Collection, Item, ExtraFieldValue, ExtraField, Tag
+from .models import Collection, Item, ExtraFieldValue, ExtraField, Tag, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
+admin.site.register(Profile)
 
 
 class ExtraFieldValueInline(admin.TabularInline):

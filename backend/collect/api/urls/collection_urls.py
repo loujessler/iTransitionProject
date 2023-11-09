@@ -3,6 +3,7 @@ from django.urls import path
 from ..views.collection_views import CollectionView, CollectionIdView
 from ..views.main_views import ItemListCreateAPIView, ItemRetrieveUpdateDestroyAPIView
 
+
 urlpatterns = [
     path('',
          CollectionView.as_view(), name='api-collection-all'),

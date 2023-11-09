@@ -1,5 +1,5 @@
 import approve from "approvejs";
-import http from "../../http-common";
+import http from "../../api/http-common";
 
 
 export async function validateUsername(username) {

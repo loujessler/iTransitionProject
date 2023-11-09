@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import http from "../../../http-common";
+import http from "../../../api/http-common";
 
 export const useAvatar = (url) => {
     const [avatar, setAvatar] = useState(null);

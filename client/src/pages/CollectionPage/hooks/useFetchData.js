@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import {useParams} from 'react-router-dom';
-import http from '../../../http-common';
+import http from '../../../api/http-common';
 
 import {useLoading} from "../../../shared/providers/LoadingProvider";
 import { ErrorContext } from "../../../shared/contexts/ErrorContext";

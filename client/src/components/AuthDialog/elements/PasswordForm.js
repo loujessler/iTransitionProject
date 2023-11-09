@@ -39,7 +39,6 @@ function PasswordForm(props) {
                     value={authData}
                     onChange={(e) => setAuthData('password', e.target.value)}
                     error={!!errorMessage.password}
-                    helperText={errorMessage.password}
                 />
                 <ErrorMessage errorMessage={errorMessage.password}/>
             </FormControl>
@@ -69,7 +68,6 @@ function PasswordForm(props) {
                         value={authData.confirmPassword}
                         onChange={(e) => setAuthData('confirmPassword', e.target.value)}
                         error={!!errorMessage.confirmPassword}
-                        helperText={errorMessage.confirmPassword}
                     />
                     <ErrorMessage errorMessage={errorMessage.confirmPassword}/>
                 </FormControl>

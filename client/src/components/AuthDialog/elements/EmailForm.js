@@ -18,7 +18,6 @@ function EmailFrom(props) {
                 value={authData}
                 onChange={(e) => setAuthData('email', e.target.value)}
                 error={!!errorMessage.email}
-                helperText={errorMessage.email}
             />
             <ErrorMessage errorMessage={errorMessage.email}/>
         </FormControl>

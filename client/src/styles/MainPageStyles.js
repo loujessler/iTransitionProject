@@ -1,12 +1,7 @@
 const MainPageStyles = {
-    appBar: {
-        // backgroundColor: "background.default",
-    },
     container: {
         backgroundColor: "background.default",
         borderRadius: 'theme.shape.borderRadius',
-        display: 'flex',
-        flexDirection: 'column',
         margin: '1rem',
         width: 'calc(100% - 2rem)',
         color: 'text.primary'

@@ -6,24 +6,27 @@ import MainPageStyles from "../../styles/MainPageStyles";
 import {useThemeState} from "../../shared/providers/ThemeProvider";
 import {useAuth} from "../../shared/providers/AuthProvider";
 import Sidebar from "../Sidebar";
-import ModeThemeBtn from "../../components/ModeThemeBtn";
-import AuthDialog from "../../components/AuthDialog";
-import SearchCustom from "./elements/SearchCustom";
-import {UserMenu} from "./elements/UserMenu";
+
 import {useHeader} from "./hooks/useHeader";
 import {useUserMenu} from "./hooks/useUserMenu";
 
+import ModeThemeBtn from "../../components/ModeThemeBtn";
+import AuthDialog from "../../components/AuthDialog";
 
-const Header = () => {
+import SearchCustom from "./elements/SearchCustom";
+import {UserMenu} from "./elements/UserMenu";
+
+
+export function Header() {
     const {logOut} = useAuth()
     const {isMobile} = useThemeState();
     const {isAuthenticated} = useAuth();
 
     const {authMode, setAuthMode, avatar} = useHeader();
-    const {anchorElUser, handleOpenUserMenu, handleCloseUserMenu} = useUserMenu();
+    const {anchorElUser, handleOpenProfile, handleOpenUserMenu, handleCloseUserMenu} = useUserMenu();
 
     const userMenuItems = {
-        "Profile": { action: handleCloseUserMenu, icon: Person },
+        "Profile": { action: handleOpenProfile, icon: Person },
         "Account": { action: handleCloseUserMenu, icon: AccountBox },
         "Dashboard": { action: handleCloseUserMenu, icon: Person },
         "Logout": { action: logOut, icon: Logout },
@@ -63,5 +66,3 @@ const Header = () => {
         </AppBar>
     );
 };
-
-export default Header;

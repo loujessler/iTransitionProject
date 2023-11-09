@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import Item, Collection, ExtraFieldValue, ExtraField, Tag
+from ..models import Item, Collection, ExtraFieldValue, ExtraField, Tag, Profile
 from django.contrib.auth.models import User
 
 
@@ -30,12 +30,18 @@ class TagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         # fields = '__all__'
         # fields = ['id', 'username', 'password', 'email']
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = ['id', 'profile', 'username', 'first_name', 'last_name', 'email']
         extra_kwargs = {'password': {'write_only': True}}
 
     @staticmethod
@@ -43,8 +49,22 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.filter(username__iexact=username).exists()
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        profile_data = validated_data.pop('profile')
+        user = User.objects.create(**validated_data)
+        Profile.objects.create(user=user, **profile_data)
         return user
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile')
+        profile = instance.profile
+
+        instance.username = validated_data.get('username', instance.username)
+        instance.save()
+
+        profile.avatar = profile_data.get('avatar', profile.avatar)
+        profile.save()
+
+        return instance
 
 
 class ItemSerializer(serializers.ModelSerializer):

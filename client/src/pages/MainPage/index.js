@@ -1,17 +1,20 @@
 import React from 'react';
 import {Container, Box} from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
-import {useFetchData} from './hooks/useFetchData';
-import {LastItems} from "./elements/LastItems";
-import {TopCollections} from "./elements/TopCollections";
-import {Tags} from "./elements/Tags";
+
 import MainPageStyles from '../../styles/MainPageStyles';
 import {useLoading} from "../../shared/providers/LoadingProvider";
 import {ErrorProvider} from "../../shared/providers/ErrorProvider";
 
+import {useFetchMainPage} from './hooks/useFetchMainPage';
+
+import {LastItems} from "./elements/LastItems";
+import {TopCollections} from "./elements/TopCollections";
+import {Tags} from "./elements/Tags";
+
 
 export function MainPage() {
-    const {data} = useFetchData();
+    const {data} = useFetchMainPage();
     const {isLoading} = useLoading();
 
     const {latestItems, topCollections, tags} = data;

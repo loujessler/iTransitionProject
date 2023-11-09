@@ -37,3 +37,31 @@ class TopCollectionView(APIView, CollectionsMixin):
         top_collections = self.top_collections()
         serializer = CollectionSerializer(top_collections, many=True)
         return Response(serializer.data)
+
+
+class UserCollectionsView(APIView, CollectionsMixin):
+    permission_classes = [permissions.IsAuthenticated]
+
+    # def get(self, request, user_id):
+    #     collections = self.collections_by_user_id(user_id)
+    #     serializer = CollectionSerializer(collections, many=True)
+    #     return Response(serializer.data)
+    def get(self, request, user_id):
+        page = request.query_params.get('page', 1)
+        page_size = request.query_params.get('page_size', 10)
+        sort_by = request.query_params.get('sort', 'name')
+
+        try:
+            page = int(page)
+            page_size = int(page_size)
+        except ValueError:
+            page = 1
+            page_size = 6
+
+        collections, total_pages = self.paginate_and_sort_collections_by_user_id(user_id, sort_by, page, page_size)
+
+        serializer = CollectionSerializer(collections, many=True)
+        return Response({
+            'collections': serializer.data,
+            'total_pages': total_pages
+        })

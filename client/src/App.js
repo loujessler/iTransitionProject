@@ -2,39 +2,28 @@ import {Routes, Route} from "react-router-dom";
 
 import './App.css';
 
-import {ThemeProvider} from "./shared/providers/ThemeProvider";
-import {AuthProvider} from "./shared/providers/AuthProvider";
-import {LoadingProvider} from "./shared/providers/LoadingProvider"
-import {ErrorProvider} from './shared/contexts/ErrorContext'
+import {Header} from "./sections/Header";
 
 import {MainPage} from "./pages/MainPage";
 import {CollectionPage} from "./pages/CollectionPage";
-import Header from "./sections/Header";
+import {UserProfile} from "./pages/UserProfile";
 
 
 function App() {
-
     return (
         <div className="App">
-            <LoadingProvider>
-                <AuthProvider>
-                    <ThemeProvider>
-                        <ErrorProvider>
-                            <Header/>
-                            <Routes>
-                                <Route path="/" element={<MainPage/>} index/>
-                                <Route path="/collection/:id" element={<CollectionPage/>}/>
+            <Header/>
+            <Routes>
+                <Route path="/" element={<MainPage/>} index/>
+                <Route path="/profile" element={<UserProfile/>}/>
+                <Route path="/collection/:id" element={<CollectionPage/>}/>
 
-                                {/*<Route index element={<MainPage />} />*/}
-                                {/*<Route path="about" element={<About />} />*/}
-                                {/*<Route path="dashboard" element={<Dashboard />} />*/}
+                {/*<Route index element={<UserProfile />} />*/}
+                {/*<Route path="about" element={<About />} />*/}
+                {/*<Route path="dashboard" element={<Dashboard />} />*/}
 
-                                {/*<Route path="*" element={<NoMatch />} />*/}
-                            </Routes>
-                        </ErrorProvider>
-                    </ThemeProvider>
-                </AuthProvider>
-            </LoadingProvider>
+                {/*<Route path="*" element={<NoMatch />} />*/}
+            </Routes>
         </div>
     );
 }
