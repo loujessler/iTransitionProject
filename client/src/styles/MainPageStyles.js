@@ -1,6 +1,5 @@
 const MainPageStyles = {
     container: {
-        backgroundColor: "background.default",
         borderRadius: 'theme.shape.borderRadius',
         margin: '1rem',
         width: 'calc(100% - 2rem)',

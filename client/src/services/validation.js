@@ -1,11 +1,11 @@
 import approve from "approvejs";
-import http from "../../api/http-common";
+import validationService from "../api/services/validationService";
 
 
-export async function validateUsername(username) {
+export async function validateUsername(username, initUsername = '') {
     try {
-        const response = await http.get('exist_username/', { params: { username } });
-        const err_exist_username = response.data.exist_username ? ['Username already exist'] : [];
+        const response = await validationService.existUsername(username);
+        const errExistUsername = (username !== initUsername && response.existUsername) ? ['Username already exist'] : [];
 
         const result = approve.value(username, {
             title: 'Username',
@@ -24,7 +24,7 @@ export async function validateUsername(username) {
             },
         });
 
-        return result.errors.concat(err_exist_username);
+        return result.errors.concat(errExistUsername);
     } catch (error) {
         console.error('Error checking username: ', error);
         return ['An error occurred while validating the username.'];

@@ -12,11 +12,11 @@ from ...models import Profile
 @permission_classes([permissions.IsAuthenticated])
 def user_profile(request):
     user = request.user
-    profile = Profile.objects.get(user=user)
+    profile, created = Profile.objects.get_or_create(user=user)  # Создаем профиль, если его нет
 
     profile_serializer = ProfileSerializer(profile, context={'request': request})
-
     user_serializer = UserSerializer(user, context={'request': request})
+
     response_data = user_serializer.data
     response_data['profile'] = profile_serializer.data
 
@@ -39,6 +39,20 @@ class UserDataView(APIView, UserMixin):
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class UserEditDataView(APIView, UserMixin):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        print(request.data)
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RegistrateUserView(APIView):

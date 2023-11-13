@@ -16,9 +16,25 @@ import {AuthItemsList} from "./elements/AuthItemsList";
 import ThemeToggle from "./elements/ThemeToggle";
 import AuthDialog from "../../components/AuthDialog";
 
-function Sidebar({ userMenuItems }) {
+function Sidebar({userMenuItems}) {
     const {isOpen, toggleSidebar} = useSidebar();
     const [authMode, setAuthMode] = useState(null);
+
+    const SidebarStyle = {
+        '.MuiBackdrop-root': {
+            backdropFilter: 'brightness(200%) blur(20px)',
+            backgroundColor: 'transparent',
+        },
+        '.MuiPaper-root': {
+            top: 'auto',
+            bottom: 0,
+            height: 'auto',
+            m: '2%',
+            borderRadius: 3,
+            backgroundColor: 'rgba(26,20,75,0.5)',
+            color: 'text.primary',
+        }
+    }
 
     return (
         <div>
@@ -26,9 +42,10 @@ function Sidebar({ userMenuItems }) {
                 <Menu/>
             </IconButton>
             <Drawer
-                anchor={'left'}
+                anchor={'right'}
                 open={isOpen}
                 onClose={toggleSidebar(false)}
+                sx={SidebarStyle}
             >
                 <Box
                     role="presentation"

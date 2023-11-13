@@ -2,7 +2,6 @@ import React from 'react';
 import {Container, Box} from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 
-import MainPageStyles from '../../styles/MainPageStyles';
 import {useLoading} from "../../shared/providers/LoadingProvider";
 import {ErrorProvider} from "../../shared/providers/ErrorProvider";
 
@@ -21,7 +20,7 @@ export function MainPage() {
 
     return (!isLoading ? (
         <ErrorProvider>
-            <Container sx={MainPageStyles.container}>
+            <Container>
                 <Box>
                     <Grid container spacing={2}>
                         <Grid xs={12} md={5}>

@@ -63,7 +63,7 @@ class RegisterUserView(APIView):
         username = request.GET.get('username', None)
         serializer = UserSerializer().exist_username(username)
         return HttpResponse(
-            content=json.dumps({'exist_username': serializer}),
+            content=json.dumps({'existUsername': serializer}),
             content_type='application/json',
             status=status.HTTP_200_OK
         )

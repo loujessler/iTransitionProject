@@ -1,20 +1,19 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
 
 import {
-    Container, Typography, Card, CardContent, Pagination, CardActions, CardMedia, Button
+    Container, Typography, Card, CardContent, Pagination, CardActions, CardMedia, CardHeader
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import {QuestionMark, Edit, Delete as DeleteIcon} from '@mui/icons-material';
+import {QuestionMark} from '@mui/icons-material';
 
 import {BASE_URL} from "../../../api/urls";
 
 import MainPageStyles from '../../../styles/MainPageStyles';
 import {ErrorProvider} from "../../../shared/providers/ErrorProvider";
+import UserCollectionBtn from "./UserCollectionBtn";
 
 
 export function UserCollections({userCollections, totalPages, fetchData, page, setPage}) {
-    const navigate = useNavigate();
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -23,54 +22,33 @@ export function UserCollections({userCollections, totalPages, fetchData, page, s
 
     return (<ErrorProvider>
         {userCollections && (<>
-            <Typography variant="h6" component="h1" gutterBottom>
-                Your collection
-            </Typography>
-            <Grid container spacing={2}>
-                {userCollections.map((collection) => (<Grid xs={6} sm={6} md={4} key={collection.id}>
-                    <Card>
+            <CardHeader title='Your collection'/>
+            <Grid container spacing={2} justifyContent="space-evenly">
+                {userCollections.map((collection) => (
+                    <Grid xs={6} md={6} lg={4} key={collection.id}>
+                        <Card elevation={1}>
                             {collection.image ? <CardMedia
                                 component="img"
                                 alt={collection.title}
                                 height="120"
                                 image={BASE_URL + collection.image}
-                            /> : <QuestionMark style={{fontSize: 120}}/>}
-                        <CardContent sx={{
-                            display: 'flex', flexDirection: 'column', alignItems: 'flex-start'
-                        }}>
-                            <Typography variant="h6">{collection.title}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {collection.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions sx={{
-                            justifyContent: 'flex-end'
-                        }}>
-                            <Button
-                                size="small"
-                                variant="contained"
-                                onClick={() => navigate(`/collection/${collection.id}`)}
-                            >
-                                View
-                            </Button>
-                            <Button
-                                size="small"
-                                variant="outlined"
-                                startIcon={<Edit/>}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                size="small"
-                                variant="outlined"
-                                color="error"
-                                startIcon={<DeleteIcon />}
-                            >
-                                Delete
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>))}
+                            /> : <QuestionMark sx={{fontSize: 113}}/>}
+                            <CardContent sx={{
+                                display: 'flex', flexDirection: 'column', alignItems: 'flex-start'
+                            }}>
+                                <Typography variant="h6">{collection.title}</Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    {collection.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions disableSpacing={true} sx={{
+                                justifyContent: 'flex-end'
+                            }}>
+                                <UserCollectionBtn collection={collection}/>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
             </Grid>
         </>)}
         {totalPages > 1 && <Container sx={MainPageStyles.container}>

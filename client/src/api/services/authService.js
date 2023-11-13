@@ -1,5 +1,5 @@
 import http from '../http-common';
-import cookies from '../../utils/cookies';
+import cookies from '../../services/cookies';
 import {LOGIN_URL, REGISTER_URL} from "../urls";
 
 const login = async (formData) => {

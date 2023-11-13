@@ -7,8 +7,9 @@ function EmailFrom(props) {
 
     return (
         <FormControl sx={{m: 1, width: 'calc(51ch + 7px)'}} variant="outlined">
-            <InputLabel htmlFor="auth-username">Email</InputLabel>
+            <InputLabel htmlFor="auth-email">Email</InputLabel>
             <OutlinedInput
+                id="auth-email"
                 margin="dense"
                 label="Email"
                 type="text"

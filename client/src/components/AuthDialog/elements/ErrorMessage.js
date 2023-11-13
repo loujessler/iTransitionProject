@@ -2,7 +2,6 @@ import React from 'react';
 import {Typography} from "@mui/material";
 
 function ErrorMessage(props) {
-
     return (
         <>
             {props.errorMessage && (

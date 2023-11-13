@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../shared/providers/AuthProvider';
-import useValidation from "./useValidation";
+import useValidation from "../../../hooks/useValidation";
 import {
     validateConfirmPass,
     validateEmail,
     validatePassword,
     validateUsername
-} from "../validation";
+} from "../../../services/validation";
 import authService from "../../../api/services/authService";
 
 function useAuthDialog(mode) {
@@ -35,9 +35,9 @@ function useAuthDialog(mode) {
         }
 
         try {
-            await authService[mode](formData);
+            const token = await authService[mode](formData);
             onClose();
-            logIn();
+            logIn(token);
         } catch (error) {
             let errorMsg = 'An unexpected error occurred.';
             if (error.response) {

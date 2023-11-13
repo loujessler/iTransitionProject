@@ -39,8 +39,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        # fields = '__all__'
-        # fields = ['id', 'username', 'password', 'email']
         fields = ['id', 'profile', 'username', 'first_name', 'last_name', 'email']
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -55,13 +53,22 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        profile_data = validated_data.pop('profile')
+        print('instance: ', instance)
+        print('validated_data: ', validated_data)
+        profile_data = validated_data.pop('profile', {})
         profile = instance.profile
 
+        # Обновление полей пользователя
         instance.username = validated_data.get('username', instance.username)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+
         instance.save()
 
-        profile.avatar = profile_data.get('avatar', profile.avatar)
+        # Обновление связанного профиля, если есть данные
+        for attr, value in profile_data.items():
+            setattr(profile, attr, value)
         profile.save()
 
         return instance

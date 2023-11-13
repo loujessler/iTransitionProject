@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Alert } from '@mui/material';
-import useForm from './hooks/useForm';
+import useForm from '../../hooks/useForm';
 import useAuthDialog from './hooks/useAuthDialog';
 import UsernameForm from './elements/UsernameForm';
 import PasswordForm from "./elements/PasswordForm";

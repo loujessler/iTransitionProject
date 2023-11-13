@@ -6,9 +6,9 @@ import {useLoading} from "../../shared/providers/LoadingProvider";
 
 
 export function CollectionPage() {
-
     const {data} = useFetchData();
     const {isLoading} = useLoading();
+    console.log('data: ', data)
 
     return (!isLoading ? (
         <ErrorProvider>

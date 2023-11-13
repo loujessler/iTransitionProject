@@ -2,15 +2,16 @@ import { useState, useEffect, useContext } from 'react';
 import http from '../../../api/http-common';
 import { useLoading } from "../../../shared/providers/LoadingProvider";
 import { ErrorContext } from "../../../shared/contexts/ErrorContext";
-import cookies from "../../../utils/cookies";
+import cookies from "../../../services/cookies";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../../shared/providers/AuthProvider";
 import profileService from "../../../api/services/profileService"
 
-export function useFetchUserProfile(page = 1, pageSize = 6) {
+
+export function useFetchUserProfile(page = 1, pageSize = 6, edit) {
     const { setLoading } = useLoading();
     const [data, setData] = useState({
-        user: null,
+        userProfile: null,
         userCollections: null,
         totalPages: 0
     });
@@ -30,13 +31,12 @@ export function useFetchUserProfile(page = 1, pageSize = 6) {
 
         try {
             const userResponse = await profileService.profile(token);
-            console.log(userResponse)
             const collectionsResponse = await http.get(`user/${userResponse.id}/collections/?page=${currentPage}&page_size=${pageSize}`, {
                 headers: { Authorization: `Token ${token}` }
             });
 
             setData({
-                user: userResponse,
+                userProfile: userResponse,
                 userCollections: collectionsResponse.data.collections,
                 totalPages: collectionsResponse.data.total_pages,
             });
@@ -52,7 +52,7 @@ export function useFetchUserProfile(page = 1, pageSize = 6) {
 
     useEffect(() => {
         fetchData(page);
-    }, [page, pageSize]);
+    }, [page, pageSize, edit]);
 
     return { data, fetchData };
 }
